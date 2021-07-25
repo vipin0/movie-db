@@ -3,7 +3,8 @@ from movieDbApp.models import Movie, Review,StreamingPlatform
 from rest_framework import serializers
 
 class ReviewReadSerializer(serializers.ModelSerializer):
-
+    review_user = serializers.StringRelatedField(read_only=True)
+    movie = serializers.StringRelatedField(read_only=True) 
     class Meta:
         model = Review
         fields = '__all__'
@@ -20,10 +21,11 @@ class ReviewWriteSerializer(serializers.ModelSerializer):
         model =  Review
         # fields = ['rating','description','active']
         fields = '__all__'
-        read_only_fields  = ['id','created','modified','movie']
+        read_only_fields  = ['id','review_user','created','modified','movie',]
 
 class MovieSerializer(serializers.ModelSerializer):
     reviews = ReviewReadSerializer(many=True,read_only=True)
+    platform = serializers.StringRelatedField(read_only=True)
     class Meta:
         model = Movie
         fields = '__all__'

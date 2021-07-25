@@ -1,4 +1,6 @@
 from django.http import response
+from rest_framework.exceptions import ValidationError
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view     # function based view
@@ -6,6 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
 
+from movieDbApp.permissions import ReviewUserOrReadOnly
 from movieDbApp.models import Movie,StreamingPlatform,Review
 from movieDbApp.serializers import MovieSerializer, ReviewReadSerializer, ReviewWriteSerializer,StreamingPlatformSerializer, ReviewSerializer
 # Create your views here.
@@ -156,6 +159,8 @@ class ReviewDetailAV(APIView):
 # review using genrics view
 
 class ReviewList(ListCreateAPIView):
+
+    permission_classes = [IsAuthenticatedOrReadOnly]
     
     def get_queryset(self):
         print(self.request)
@@ -170,14 +175,23 @@ class ReviewList(ListCreateAPIView):
     def perform_create(self, serializer):
         pk = self.kwargs['mpk']
         movie = Movie.objects.get(pk=pk)
-        serializer.save(movie=movie)
-        
+        user = self.request.user
+        is_reviewed = Review.objects.filter(movie=movie,review_user=user)
+        if is_reviewed.exists():
+            raise ValidationError("You have already reviewed this movie!",400)
+        serializer.save(movie=movie,review_user=user)
+
         
     
 
 class ReviewDetail(RetrieveUpdateDestroyAPIView):
-    serializer_class = ReviewSerializer
     queryset = Review.objects.all()
+    permission_classes = [ReviewUserOrReadOnly]
+    def get_serializer_class(self):
+        
+        if self.request.method in ('PUT','PATCH'):
+            return ReviewWriteSerializer
+        return ReviewReadSerializer
 
 
 # ************** function based view **************

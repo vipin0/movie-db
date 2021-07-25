@@ -2,6 +2,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -42,7 +43,7 @@ class Movie(models.Model):
 
 
 class Review(models.Model):
-
+    review_user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='review_user')
     rating = models.PositiveSmallIntegerField(_("Rating"),validators=[MinValueValidator(1),MaxValueValidator(10)])
     description = models.CharField(_("Description"), max_length=200,null=True,blank=True)
     movie = models.ForeignKey(Movie,on_delete=models.CASCADE,related_name='reviews')
