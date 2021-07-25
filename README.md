@@ -17,6 +17,13 @@ PUT   ​/movies​/{id}
 
 DELETE /movies​/{id}
 
+```
+<hr>
+
+<b>Review</b>
+
+```
+
 GET   ​/movies​/{movie_id}​/review​/
 
 POST  ​/movies​/{movie_id}​/review​/
