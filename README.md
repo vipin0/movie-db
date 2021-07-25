@@ -1,7 +1,9 @@
 # Movie Database API using Django REST Framework
 A simple movie database API created using Django REST Framework.
+<hr>
+### API endpoints
 
-##### API endpoints
+
 <b>Movies</b>
 ```
 
@@ -28,6 +30,8 @@ PATCH /movies​/{movie_id}​/review​/{id}
 DELETE  /movies​/{movie_id}​/review​/{id}
 
 ```
+
+<hr>
 <b>streams</b>
 
 ```
