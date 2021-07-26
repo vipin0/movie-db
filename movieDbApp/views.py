@@ -109,16 +109,16 @@ class StreamingPlatformDetailAv(APIView):
 
 class ReviewAV(APIView):
 
-    def get(self,request,mpk):
+    def get(self,request,movie_id):
         try:
-            movie = Movie.objects.get(pk=mpk)
+            movie = Movie.objects.get(pk=movie_id)
         except Movie.DoesNotExist as e:
             return Response({'error':'Movie not found'},status=status.HTTP_404_NOT_FOUND)
         reviews = Review.objects.filter(movie=movie)
         serializer = ReviewSerializer(reviews,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
 
-    def post(self,request,mpk):
+    def post(self,request,movie_id):
         serializer = ReviewSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -128,7 +128,7 @@ class ReviewAV(APIView):
 
 class ReviewDetailAV(APIView):
 
-    def get(self,request,mpk,pk):
+    def get(self,request,movie_id,pk):
         try:
             review = Review.objects.get(pk=pk)
         except Review.DoesNotExist as e:
@@ -136,7 +136,7 @@ class ReviewDetailAV(APIView):
         serializer = ReviewSerializer(review)
         return Response(serializer.data,status=status.HTTP_200_OK)
 
-    def put(self,request,mpk,pk):
+    def put(self,request,movie_id,pk):
         try:
             review = Review.objects.get(pk=pk)
         except Review.DoesNotExist as e:
@@ -148,7 +148,7 @@ class ReviewDetailAV(APIView):
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
         
 
-    def delete(self,request,mpk,pk):
+    def delete(self,request,movie_id,pk):
         try:
             review = Review.objects.get(pk=pk)
         except Review.DoesNotExist as e:
@@ -164,8 +164,8 @@ class ReviewList(ListCreateAPIView):
     
     def get_queryset(self):
         print(self.request)
-        mpk = self.kwargs['mpk']
-        movie = Movie.objects.get(pk=mpk)
+        movie_id = self.kwargs['movie_id']
+        movie = Movie.objects.get(pk=movie_id)
         return Review.objects.filter(movie=movie)
     def get_serializer_class(self):
         
@@ -173,7 +173,7 @@ class ReviewList(ListCreateAPIView):
             return ReviewWriteSerializer
         return ReviewReadSerializer
     def perform_create(self, serializer):
-        pk = self.kwargs['mpk']
+        pk = self.kwargs['movie_id']
         movie = Movie.objects.get(pk=pk)
         user = self.request.user
         is_reviewed = Review.objects.filter(movie=movie,review_user=user)
