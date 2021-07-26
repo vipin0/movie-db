@@ -1,4 +1,3 @@
-from django.db.models import fields
 from movieDbApp.models import Movie, Review,StreamingPlatform
 from rest_framework import serializers
 
@@ -16,7 +15,9 @@ class ReviewSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ReviewWriteSerializer(serializers.ModelSerializer):
-
+    review_user = serializers.StringRelatedField(read_only=True)
+    movie = serializers.StringRelatedField(read_only=True)
+    
     class Meta:
         model =  Review
         # fields = ['rating','description','active']

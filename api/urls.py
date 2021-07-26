@@ -1,4 +1,5 @@
 from django.urls import path,include
 urlpatterns = [
-    path('api/',include('movieDbApp.urls')),
+    path('',include('movieDbApp.urls')),
+    path('user/',include('user_app.urls')),
 ]

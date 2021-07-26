@@ -1,6 +1,6 @@
 from django.http import response
 from rest_framework.exceptions import ValidationError
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view     # function based view
@@ -160,7 +160,7 @@ class ReviewDetailAV(APIView):
 
 class ReviewList(ListCreateAPIView):
 
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
         print(self.request)
@@ -179,6 +179,14 @@ class ReviewList(ListCreateAPIView):
         is_reviewed = Review.objects.filter(movie=movie,review_user=user)
         if is_reviewed.exists():
             raise ValidationError("You have already reviewed this movie!",400)
+        
+        if movie.average_rating == 0:
+            movie.average_rating = serializer.validated_data['rating']
+        else:
+            movie.average_rating = (movie.average_rating + serializer.validated_data['rating'])/2
+
+        movie.number_rating += 1
+        movie.save()
         serializer.save(movie=movie,review_user=user)
 
         

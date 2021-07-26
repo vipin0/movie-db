@@ -28,6 +28,8 @@ class Movie(models.Model):
     description = models.CharField(_("Description"), max_length=255)
     platform = models.ForeignKey(StreamingPlatform,on_delete=models.CASCADE,related_name='movies')
     active = models.BooleanField(_("Active"),default=True)
+    average_rating = models.FloatField(_("Average Rating"),default=0)
+    number_rating = models.IntegerField(_("Total Reviews"),default=0)
     released_on = models.DateTimeField(_("Released On"), auto_now=False, auto_now_add=True)
     
 
@@ -56,7 +58,7 @@ class Review(models.Model):
         verbose_name_plural = _("Reviews")
 
     def __str__(self):
-        return f"{self.rating*'💥'} -- {self.movie.name}"
+        return f"{self.rating} * | {self.movie.name}"
 
     def get_absolute_url(self):
         return reverse("review_detail", kwargs={"pk": self.pk})
