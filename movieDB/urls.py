@@ -1,4 +1,3 @@
-
 from django.contrib import admin
 from django.urls import path,include
 from django.conf import settings
@@ -29,5 +28,7 @@ urlpatterns = [
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
 
+
+# for serving static files 
 urlpatterns+=static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

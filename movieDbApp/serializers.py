@@ -30,7 +30,7 @@ class MovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
         fields = '__all__'
-        read_only_fields = ['id','released_on']
+        read_only_fields = ['id','released_on','average_rating','number_rating']
 
 class StreamingPlatformSerializer(serializers.ModelSerializer):
 

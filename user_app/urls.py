@@ -5,6 +5,6 @@ from user_app import views
 
 urlpatterns = [
     path('login/',ObtainAuthToken.as_view(),name='login'),
-    path('register/',views.regiser_user,name='register'),
+    path('register/',views.RegisterUser.as_view(),name='register'),
     path('logout/',views.logout_view,name='logout'),
 ]

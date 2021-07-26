@@ -1,16 +1,17 @@
 from django.contrib.auth.models import User
-from rest_framework import fields, serializers
+from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.serializers import ModelSerializer
 
 class RegisterSerializer(ModelSerializer):
     password2 = serializers.CharField(style={'input_type':'password'},write_only=True)
+    password = serializers.CharField(style={'input_type':'password'},write_only=True)
 
     class Meta:
         model = User
         fields = ['username','email','password','password2']
         extra_kwargs={
-            'password':{'write_only':True}
+            'password':{'write_only':True,}
         }
     
     def save(self):
@@ -27,4 +28,3 @@ class RegisterSerializer(ModelSerializer):
         user.set_password(password)
         user.save()
         return user
-        

@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
 
-from movieDbApp.permissions import ReviewUserOrReadOnly
+from movieDbApp.permissions import IsAdminOrReadOnly, ReviewUserOrReadOnly
 from movieDbApp.models import Movie,StreamingPlatform,Review
 from movieDbApp.serializers import MovieSerializer, ReviewReadSerializer, ReviewWriteSerializer,StreamingPlatformSerializer, ReviewSerializer
 # Create your views here.
@@ -158,20 +158,49 @@ class ReviewDetailAV(APIView):
 
 # review using genrics view
 
+class MovieList(ListCreateAPIView):
+    serializer_class = MovieSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    
+    def get_queryset(self):
+        return Movie.objects.all()
+
+class MovieDetail(RetrieveUpdateDestroyAPIView):
+    serializer_class = MovieSerializer
+    permission_classes = [IsAdminOrReadOnly]
+    
+    def get_queryset(self):
+        return Movie.objects.all()
+
+class StreamingPlatformList(ListCreateAPIView):
+
+    serializer_class = StreamingPlatformSerializer
+    permission_classes = [IsAdminOrReadOnly]
+    def get_queryset(self):
+        return StreamingPlatform.objects.all()
+
+class StreamingPlatformDetail(RetrieveUpdateDestroyAPIView):
+    serializer_class = StreamingPlatformSerializer
+    permission_classes = [IsAdminOrReadOnly]
+
+    def get_queryset(self):
+        return StreamingPlatform.objects.all()
+
 class ReviewList(ListCreateAPIView):
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     
     def get_queryset(self):
         print(self.request)
         movie_id = self.kwargs['movie_id']
         movie = Movie.objects.get(pk=movie_id)
         return Review.objects.filter(movie=movie)
+    
     def get_serializer_class(self):
-        
         if self.request.method == 'POST':
             return ReviewWriteSerializer
         return ReviewReadSerializer
+    
     def perform_create(self, serializer):
         pk = self.kwargs['movie_id']
         movie = Movie.objects.get(pk=pk)
@@ -193,6 +222,7 @@ class ReviewList(ListCreateAPIView):
     
 
 class ReviewDetail(RetrieveUpdateDestroyAPIView):
+    
     queryset = Review.objects.all()
     permission_classes = [ReviewUserOrReadOnly]
     def get_serializer_class(self):
