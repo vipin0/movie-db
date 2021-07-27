@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'movieDbApp.apps.MoviedbappConfig',
     'user_app.apps.UserAppConfig',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -137,8 +138,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    # 'PAGE_SIZE': 10,
 }
 
 # APPEND_SLASH=False

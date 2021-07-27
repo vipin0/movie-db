@@ -6,8 +6,10 @@ from rest_framework import status
 from rest_framework.decorators import api_view     # function based view
 from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
 
-
+from movieDbApp.pagination import CustomPagination
 from movieDbApp.permissions import IsAdminOrReadOnly, ReviewUserOrReadOnly
 from movieDbApp.models import Movie,StreamingPlatform,Review
 from movieDbApp.serializers import MovieSerializer, ReviewReadSerializer, ReviewWriteSerializer,StreamingPlatformSerializer, ReviewSerializer
@@ -161,6 +163,10 @@ class ReviewDetailAV(APIView):
 class MovieList(ListCreateAPIView):
     serializer_class = MovieSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+    pagination_class = CustomPagination
+    filter_backends = [filters.SearchFilter,filters.OrderingFilter]
+    search_fields = ['name','=platform__name']
+    ordering_fields = ['average_rating', 'platform','released_on']
     
     def get_queryset(self):
         return Movie.objects.all()
@@ -168,7 +174,7 @@ class MovieList(ListCreateAPIView):
 class MovieDetail(RetrieveUpdateDestroyAPIView):
     serializer_class = MovieSerializer
     permission_classes = [IsAdminOrReadOnly]
-    
+
     def get_queryset(self):
         return Movie.objects.all()
 
@@ -176,6 +182,10 @@ class StreamingPlatformList(ListCreateAPIView):
 
     serializer_class = StreamingPlatformSerializer
     permission_classes = [IsAdminOrReadOnly]
+    pagination_class = CustomPagination
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name',]
+
     def get_queryset(self):
         return StreamingPlatform.objects.all()
 
@@ -189,6 +199,12 @@ class StreamingPlatformDetail(RetrieveUpdateDestroyAPIView):
 class ReviewList(ListCreateAPIView):
 
     permission_classes = [IsAuthenticatedOrReadOnly]
+    pagination_class = CustomPagination
+    
+    filter_backends = [filters.SearchFilter,filters.OrderingFilter,DjangoFilterBackend]
+    filterset_fields = ['rating', 'review_user__username']
+    search_fields = ['description','=review_user__username','movie__name']
+    ordering_fields = ['rating']
     
     def get_queryset(self):
         print(self.request)
@@ -225,6 +241,7 @@ class ReviewDetail(RetrieveUpdateDestroyAPIView):
     
     queryset = Review.objects.all()
     permission_classes = [ReviewUserOrReadOnly]
+
     def get_serializer_class(self):
         
         if self.request.method in ('PUT','PATCH'):

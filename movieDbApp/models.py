@@ -58,7 +58,7 @@ class Review(models.Model):
         verbose_name_plural = _("Reviews")
 
     def __str__(self):
-        return f"{self.rating} * | {self.movie.name}"
+        return f"Rating : {self.rating} <<>> Content : {self.description}"
 
     def get_absolute_url(self):
         return reverse("review_detail", kwargs={"pk": self.pk})
