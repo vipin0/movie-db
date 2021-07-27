@@ -140,3 +140,6 @@ REST_FRAMEWORK = {
 }
 
 # APPEND_SLASH=False
+
+LOGIN_URL = '/api/user/login/'
+LOGOUT_URL = '/api/user/logout/'
