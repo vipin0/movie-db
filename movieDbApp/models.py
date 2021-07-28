@@ -15,6 +15,7 @@ class StreamingPlatform(models.Model):
     class Meta:
         verbose_name = _("StreamingPlatform")
         verbose_name_plural = _("StreamingPlatforms")
+        ordering = ['id']
 
     def __str__(self):
         return self.name
@@ -36,6 +37,7 @@ class Movie(models.Model):
     class Meta:
         verbose_name = _("Movie")
         verbose_name_plural = _("Movies")
+        ordering = ['id']
 
     def __str__(self):
         return self.name
@@ -56,6 +58,7 @@ class Review(models.Model):
     class Meta:
         verbose_name = _("Review")
         verbose_name_plural = _("Reviews")
+        ordering = ['id']
 
     def __str__(self):
         return f"Rating : {self.rating} <<>> Content : {self.description}"

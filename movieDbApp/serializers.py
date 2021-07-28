@@ -20,15 +20,28 @@ class ReviewWriteSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields  = ['id','review_user','created','modified','movie','active']
 
-class MovieSerializer(serializers.ModelSerializer):
+
+class MovieWriteSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Movie
+        fields = '__all__'
+        read_only_fields = ['id','released_on','average_rating','number_rating']
+
+class MovieReadSerializer(serializers.ModelSerializer):
     # reviews = ReviewReadSerializer(many=True,read_only=True)
-    reviews = serializers.StringRelatedField(many=True,read_only=True)
+    # reviews = serializers.StringRelatedField(many=True,read_only=True)
     # reviews = serializers.SerializerMethodField('paginated_reviews')
+    total_reviews = serializers.SerializerMethodField('reviews_count')
     platform = serializers.StringRelatedField(read_only=True)
     class Meta:
         model = Movie
         fields = '__all__'
         read_only_fields = ['id','released_on','average_rating','number_rating']
+
+    def reviews_count(self,obj):
+        review = Review.objects.filter(movie=obj)
+        return len(review)
 
     def paginated_reviews(self, obj):
         try:
@@ -38,7 +51,7 @@ class MovieSerializer(serializers.ModelSerializer):
         if page_size is None:
             page_size = 10
         # page_size = self.context.get('request').query_params.get('size') or 10
-        paginator = Paginator(obj.movie.all(), page_size)
+        paginator = Paginator(obj.review.all(), page_size)
         try:
             page = self.context.get('request').query_params.get('page')
         except Exception as e:
@@ -47,14 +60,14 @@ class MovieSerializer(serializers.ModelSerializer):
         if page is None:
             page = 1
         review = paginator.page(page)
-        serializer = MovieSerializer(review, many=True)
+        serializer = MovieReadSerializer(review, many=True)
         return serializer.data
 
     
 
 class StreamingPlatformSerializer(serializers.ModelSerializer):
 
-    # movies = MovieSerializer(many=True,read_only=True) # gives everything
+    # movies = MovieReadSerializer(many=True,read_only=True) # gives everything
 
     # movies = serializers.SerializerMethodField('paginated_movies')
     
@@ -76,7 +89,7 @@ class StreamingPlatformSerializer(serializers.ModelSerializer):
         page = self.context['request'].query_params.get('page') or 1
 
         movie = paginator.page(page)
-        serializer = MovieSerializer(movie, many=True)
+        serializer = MovieReadSerializer(movie, many=True)
         return serializer.data
 
 
@@ -91,7 +104,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 
 # without model serializers
-class MovieSerializer1(serializers.Serializer):
+class MovieReadSerializer1(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     name = serializers.CharField()
     description = serializers.CharField()
