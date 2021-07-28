@@ -1,6 +1,11 @@
 from django.core.paginator import Paginator
 from rest_framework import serializers
-from movieDbApp.models import Movie, Review,StreamingPlatform
+from movieDbApp.models import Movie, Review, Star,StreamingPlatform
+
+class StarSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Star
+        fields = '__all__'
 
 class ReviewReadSerializer(serializers.ModelSerializer):
     review_user = serializers.StringRelatedField(read_only=True)
@@ -34,6 +39,7 @@ class MovieReadSerializer(serializers.ModelSerializer):
     # reviews = serializers.SerializerMethodField('paginated_reviews')
     total_reviews = serializers.SerializerMethodField('reviews_count')
     platform = serializers.StringRelatedField(read_only=True)
+    stars = serializers.StringRelatedField(many=True)
     class Meta:
         model = Movie
         fields = '__all__'

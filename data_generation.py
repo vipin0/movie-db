@@ -48,3 +48,22 @@ for i in range(500):
     m.save()
     m.stars.set(x)
     m.save()
+
+print("\nGenerating Reviews ...")
+review = ['Good Movie','Excellent','Very Very Good Movie','Worst Movie']
+LIMIT = 1500
+count = 0
+limit_reached = False
+for u in User.objects.all():
+    for m in models.Movie.objects.all():
+        r = models.Review.objects.create(review_user=u,movie=m,rating=random.randint(1,10),description=random.choice(review))
+        r.save()
+        if count==LIMIT:
+            limit_reached=True
+            break
+        count+=1
+    if limit_reached:
+        break
+
+
+print("\n********** Data Generating Completed **********")

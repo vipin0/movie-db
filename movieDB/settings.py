@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'user_app.apps.UserAppConfig',
     'django_filters',
 ]
+   
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -54,6 +55,19 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+if DEBUG:
+    INSTALLED_APPS += [
+        'debug_toolbar',
+    ]
+    
+    MIDDLEWARE+=[
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+    ]
+    INTERNAL_IPS = [
+        '127.0.0.1',
+    ]
+
 
 ROOT_URLCONF = 'movieDB.urls'
 

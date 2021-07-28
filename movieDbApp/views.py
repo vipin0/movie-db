@@ -1,6 +1,6 @@
 from django.http import response
 from rest_framework.exceptions import ValidationError
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view     # function based view
@@ -11,8 +11,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from movieDbApp.pagination import CustomPagination
 from movieDbApp.permissions import IsAdminOrReadOnly, ReviewUserOrReadOnly
-from movieDbApp.models import Movie,StreamingPlatform,Review
-from movieDbApp.serializers import MovieReadSerializer, MovieWriteSerializer, ReviewReadSerializer, ReviewWriteSerializer,StreamingPlatformSerializer, ReviewSerializer
+from movieDbApp.models import Movie, Star,StreamingPlatform,Review
+from movieDbApp.serializers import MovieReadSerializer, MovieWriteSerializer, ReviewReadSerializer, ReviewWriteSerializer, StarSerializer,StreamingPlatformSerializer, ReviewSerializer
 # Create your views here.
 
 #  using genrics view
@@ -22,7 +22,7 @@ class MovieList(ListCreateAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
     pagination_class = CustomPagination
     filter_backends = [filters.SearchFilter,filters.OrderingFilter]
-    search_fields = ['name','=platform__name']
+    search_fields = ['name','=platform__name','stars__full_name']
     ordering_fields = ['average_rating', 'platform','released_on']
     
     def get_queryset(self):
@@ -101,9 +101,6 @@ class ReviewList(ListCreateAPIView):
         movie.save()
         serializer.save(movie=movie,review_user=user)
 
-        
-    
-
 class ReviewDetail(RetrieveUpdateDestroyAPIView):
     
     queryset = Review.objects.all()
@@ -115,7 +112,22 @@ class ReviewDetail(RetrieveUpdateDestroyAPIView):
             return ReviewWriteSerializer
         return ReviewReadSerializer
 
+class ActorList(ListCreateAPIView):
+    permission_classes = [IsAdminOrReadOnly]
+    serializer_class = StarSerializer
+    pagination_class = CustomPagination
+    filter_backends = [filters.SearchFilter,]
+    search_fields = ['full_name',]
 
+    def get_queryset(self):
+        return Star.objects.all()
+
+class ActorDetail(RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAdminOrReadOnly]
+    serializer_class = StarSerializer
+
+    def get_queryset(self):
+        return Star.objects.all()
 
 
 # using APIView class based
