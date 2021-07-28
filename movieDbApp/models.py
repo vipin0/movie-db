@@ -23,12 +23,28 @@ class StreamingPlatform(models.Model):
     def get_absolute_url(self):
         return reverse("StreamingPlatform_detail", kwargs={"pk": self.pk})
 
+class Star(models.Model):
+    full_name = models.CharField(_("Full Name "), max_length=50,)
+    about  = models.CharField(_("About"), max_length=255,null=True,blank=True)
+    class Meta:
+        verbose_name = _("Star")
+        verbose_name_plural = _("Stars")
+        ordering=['id']
+
+    def __str__(self):
+        return self.full_name
+
+    def get_absolute_url(self):
+        return reverse("actor_detail", kwargs={"pk": self.pk})
+
+
 
 class Movie(models.Model):
     name = models.CharField(_("Name"), max_length=50)
     description = models.CharField(_("Description"), max_length=255)
     platform = models.ForeignKey(StreamingPlatform,on_delete=models.CASCADE,related_name='movies')
     active = models.BooleanField(_("Active"),default=True)
+    stars = models.ManyToManyField(Star,related_name='movie_stars',)
     average_rating = models.FloatField(_("Average Rating"),default=0)
     number_rating = models.IntegerField(_("Total Reviews"),default=0)
     released_on = models.DateTimeField(_("Released On"), auto_now=False, auto_now_add=True)
