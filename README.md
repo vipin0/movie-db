@@ -1,56 +1,28 @@
 # Movie Database API using Django REST Framework
 A simple movie database API created using Django REST Framework.
 
+##### Live Project API
 
-#### API endpoints
+    1.[Swagger OpenAPI UI](https://movie-db04.herokuapp.com/)
+    2.[Redoc API UI](https://movie-db04.herokuapp.com/redoc/)
+    3.[Browsable API UI](https://movie-db04.herokuapp.com/api/movies)
 
-
-<b>Movies</b>
+#### To Run Locally
 ```
-
-GET   /movies​/
-
-POST  /movies​/
-
-GET   /movies​/{id}
-
-PUT   ​/movies​/{id}
-
-DELETE /movies​/{id}
-
-```
-<hr>
-
-<b>Review</b>
+    python manage.py makemigrations
+    
+    python manage.py migrate
+    
+    python manage.py runserver
 
 ```
 
-GET   ​/movies​/{movie_id}​/review​/
+#### Test Data Set
+This Test Data Set is generated randomly by a custom django management command.
 
-POST  ​/movies​/{movie_id}​/review​/
-
-GET  /movies​/{movie_id}​/review​/{id}
-
-PUT  ​/movies​/{movie_id}​/review​/{id}
-
-PATCH /movies​/{movie_id}​/review​/{id}
-
-DELETE  /movies​/{movie_id}​/review​/{id}
+To generate this test data set run the following command
+```
+    python manage.py generate_test_data
 
 ```
-
-<hr>
-<b>streams</b>
-
-```
-GET  /streams​/
-
-POST /streams​/
-
-GET /streams​/{id}
-
-PUT ​/streams​/{id}
-
-DELETE  ​/streams​/{id}
-
-```
+This will generate 100 users, 4 Streaming Platfors, 100 Actors, 500 Movies, and 1500 Reviews.
