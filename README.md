@@ -1,13 +1,13 @@
 # Movie Database API using Django REST Framework
 A simple movie database API created using Django REST Framework.
 
-##### Live Project API
+## Live Project API
 
 1.[Swagger OpenAPI UI](https://movie-db04.herokuapp.com/)<br>
 2.[Redoc API UI](https://movie-db04.herokuapp.com/redoc/)<br>
 3.[Browsable API UI](https://movie-db04.herokuapp.com/api/movies/)<br>
 
-#### To Run Locally
+## To Run Locally
 Clone the repository and navigate to the main directory.
 
 **Install the requirements**
@@ -30,7 +30,7 @@ python manage.py runserver
 
 ```
 
-#### Test Data Set
+## Generate Test Data Set [OPTIONAL]
 This Test Data Set is generated randomly by a custom django management command.
 
 To generate this test data set run the following command
