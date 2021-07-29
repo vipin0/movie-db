@@ -35,7 +35,7 @@ This Test Data Set is generated randomly by a custom django management command.
 
 To generate this test data set run the following command
 ```
-    python manage.py generate_test_data
+python manage.py generate_test_data
 
 ```
 This will generate 100 users, 4 Streaming Platfors, 100 Actors, 500 Movies, and 1500 Reviews.
