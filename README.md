@@ -8,12 +8,25 @@ A simple movie database API created using Django REST Framework.
 3.[Browsable API UI](https://movie-db04.herokuapp.com/api/movies/)<br>
 
 #### To Run Locally
+Clone the repository and navigate to the main directory.
+
+**Install the requirements**
 ```
-    python manage.py makemigrations
+pip install -r requirements.txt
+
+```
+
+**Run Migrations**
+```
+python manage.py makemigrations
     
-    python manage.py migrate
-    
-    python manage.py runserver
+python manage.py migrate
+
+```
+
+**Start Development Server**
+```
+python manage.py runserver
 
 ```
 
