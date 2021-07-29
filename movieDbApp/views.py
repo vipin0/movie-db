@@ -122,12 +122,25 @@ class ActorList(ListCreateAPIView):
     def get_queryset(self):
         return Star.objects.all()
 
+
 class ActorDetail(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAdminOrReadOnly]
     serializer_class = StarSerializer
 
     def get_queryset(self):
         return Star.objects.all()
+
+
+    # tried getting movies of each actor
+
+    # def get(self,request,pk):
+    #     actor = Star.objects.get(pk=pk)
+    #     movies = Movie.objects.filter(stars=actor)
+    #     m_serialzer = MovieReadSerializer(movies,many=True)
+    #     print(m_serialzer.data)
+    #     response = StarSerializer(actor)
+    #     response.data['movies']= m_serialzer.data
+    #     return Response(response.data,status=status.HTTP_200_OK)
 
 
 # using APIView class based
@@ -175,7 +188,6 @@ class MovieDetailAV(APIView):
             return Response({'error':'Movie not found'},status=status.HTTP_404_NOT_FOUND)
         movie.delete()
         return Response({'message':'Movie deleted'},status=status.HTTP_204_NO_CONTENT)
-
 
 class StreamingPlatformListAV(APIView):
 
@@ -238,7 +250,6 @@ class ReviewAV(APIView):
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     
-
 class ReviewDetailAV(APIView):
 
     def get(self,request,movie_id,pk):
