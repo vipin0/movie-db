@@ -3,9 +3,9 @@ A simple movie database API created using Django REST Framework.
 
 ##### Live Project API
 
-    1.[Swagger OpenAPI UI](https://movie-db04.herokuapp.com/)
-    2.[Redoc API UI](https://movie-db04.herokuapp.com/redoc/)
-    3.[Browsable API UI](https://movie-db04.herokuapp.com/api/movies)
+1.[Swagger OpenAPI UI](https://movie-db04.herokuapp.com/)
+2.[Redoc API UI](https://movie-db04.herokuapp.com/redoc/)
+3.[Browsable API UI](https://movie-db04.herokuapp.com/api/movies/)
 
 #### To Run Locally
 ```
