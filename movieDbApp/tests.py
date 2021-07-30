@@ -8,51 +8,6 @@ from rest_framework import status
 from movieDbApp import models
 # Create your tests here.
 
-class StreamingPlatformTestCase(APITestCase):
-
-    def setUp(self) -> None:
-        self.user = User.objects.create_user(username="test",password="Test@1234")
-        self.token = Token.objects.get(user__username=self.user)
-        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
-
-        self.stream = models.StreamingPlatform.objects.create(
-                                                                name="netflix",
-                                                                about="netflix",
-                                                                website="netflix.com"
-                                                            )
-
-    
-    def test_streamingplatform_create(self):
-        data={
-            "name":"netflix",
-            "about":"netflix",
-            "website":"netflix.com"
-        } 
-        response = self.client.post(reverse('streaming_list'),data=data)
-        self.assertEqual(response.status_code,status.HTTP_403_FORBIDDEN)
-
-    def test_streamingplatform_list(self):
-        response = self.client.get(reverse('streaming_list'))
-        self.assertEqual(response.status_code,status.HTTP_200_OK)
-
-    def test_streamingplatform_get_one(self):
-        response = self.client.get(reverse('streaming_detail',args=(self.stream.id,)))
-        self.assertEqual(response.status_code,status.HTTP_200_OK)
-
-    def test_streamingplatform_put(self):
-        data={
-            "name":"netflix",
-            "about":"netflix --update",
-            "website":"netflix.com"
-        } 
-        response = self.client.put(reverse('streaming_detail',args=(self.stream.id,)),data=data)
-        self.assertEqual(response.status_code,status.HTTP_403_FORBIDDEN)
-
-    def test_streamingplatform_delete(self):
-        response = self.client.delete(reverse('streaming_detail',args=(self.stream.id,)))
-        self.assertEqual(response.status_code,status.HTTP_403_FORBIDDEN)
-
-
 class MovieTestCase(APITestCase):
     def setUp(self):
         self.user = User.objects.create_user(username="test",password="Test@1234")
@@ -76,14 +31,17 @@ class MovieTestCase(APITestCase):
         # self.movie.stars.set(self.actors)
     
     def test_movie_create(self):
+        # act = [i for i in self.actors]
+        # print(act)
         data = {
                 "name": "TestMovie",
                 "description": "TEst --updated",
                 "active": True,
                 "platform": self.stream.id,
-                "stars": ''
+                "stars": [1,2]
             }
         response = self.client.post(reverse('movie_list'),data)
+        # print(response.data)
         self.assertEqual(response.status_code,status.HTTP_201_CREATED)
 
     def test_movie_list(self):
@@ -222,4 +180,48 @@ class ActorTestCase(APITestCase):
     
     def test_review_delete(self):
         response = self.client.delete(reverse('actor_detail',args=(self.actor.id,)))
+        self.assertEqual(response.status_code,status.HTTP_403_FORBIDDEN)
+
+class StreamingPlatformTestCase(APITestCase):
+
+    def setUp(self) -> None:
+        self.user = User.objects.create_user(username="test",password="Test@1234")
+        self.token = Token.objects.get(user__username=self.user)
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
+
+        self.stream = models.StreamingPlatform.objects.create(
+                                                                name="netflix",
+                                                                about="netflix",
+                                                                website="netflix.com"
+                                                            )
+
+    
+    def test_streamingplatform_create(self):
+        data={
+            "name":"netflix",
+            "about":"netflix",
+            "website":"netflix.com"
+        } 
+        response = self.client.post(reverse('streaming_list'),data=data)
+        self.assertEqual(response.status_code,status.HTTP_403_FORBIDDEN)
+
+    def test_streamingplatform_list(self):
+        response = self.client.get(reverse('streaming_list'))
+        self.assertEqual(response.status_code,status.HTTP_200_OK)
+
+    def test_streamingplatform_get_one(self):
+        response = self.client.get(reverse('streaming_detail',args=(self.stream.id,)))
+        self.assertEqual(response.status_code,status.HTTP_200_OK)
+
+    def test_streamingplatform_put(self):
+        data={
+            "name":"netflix",
+            "about":"netflix --update",
+            "website":"netflix.com"
+        } 
+        response = self.client.put(reverse('streaming_detail',args=(self.stream.id,)),data=data)
+        self.assertEqual(response.status_code,status.HTTP_403_FORBIDDEN)
+
+    def test_streamingplatform_delete(self):
+        response = self.client.delete(reverse('streaming_detail',args=(self.stream.id,)))
         self.assertEqual(response.status_code,status.HTTP_403_FORBIDDEN)
