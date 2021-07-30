@@ -122,7 +122,6 @@ class ActorList(ListCreateAPIView):
     def get_queryset(self):
         return Star.objects.all()
 
-
 class ActorDetail(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAdminOrReadOnly]
     serializer_class = StarSerializer
