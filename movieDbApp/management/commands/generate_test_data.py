@@ -9,16 +9,16 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         # creating users 100 users
-        print("DataSet Generation started...\n\nCreating users...\n")
+        print("\n******** DataSet Generation started *********\n\nCreating users...")
 
-        users = []
-        for i in range(100):
-            users.append(User(username=f"user{i+1}",email=f"user{i+1}@gmail.com",password="User@1234"))
-        User.objects.bulk_create(users)
-
-
+        # users = []
         # for i in range(100):
-        #     u  = User.objects.create_user(username=f"user{i+1}",email=f"user{1}@gmail.com",password="User@1234")
+        #     users.append(User(username=f"user{i+1}",email=f"user{i+1}@gmail.com",password="User@1234"))
+        # User.objects.bulk_create(users)
+
+
+        for i in range(100):
+            u  = User.objects.create_user(username=f"user{i+1}",email=f"user{i+1}@gmail.com",password="User@1234")
 
         print("\nCreating Streaming Platforms...")
         platforms = [

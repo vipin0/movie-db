@@ -20,10 +20,11 @@ class RegisterSerializer(ModelSerializer):
         email = self.validated_data['email']
         username = self.validated_data['username']
 
-        if password!=password2:
-            raise ValidationError({"error":"Password1 and password2 must be same!"},code=400)
         if User.objects.filter(email=email).exists():
             raise ValidationError({"error":"Email already exists!"},code=400)
+            
+        if password!=password2:
+            raise ValidationError({"error":"Password1 and password2 must be same!"},code=400)
         user = User(username=username,email=email)
         user.set_password(password)
         user.save()

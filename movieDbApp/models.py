@@ -74,10 +74,10 @@ class Review(models.Model):
     class Meta:
         verbose_name = _("Review")
         verbose_name_plural = _("Reviews")
-        ordering = ['id']
+        ordering = ['-created']
 
     def __str__(self):
-        return f"Rating : {self.rating} <<>> Content : {self.description}"
+        return f"Rating : {self.rating} | Content : {self.description}"
 
     def get_absolute_url(self):
         return reverse("review_detail", kwargs={"pk": self.pk})
