@@ -88,6 +88,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'movieDB.wsgi.application'
+ASGI_APPLICATION = 'movieDB.asgi.application'
 
 
 # Database
