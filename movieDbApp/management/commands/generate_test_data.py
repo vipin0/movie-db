@@ -82,8 +82,12 @@ class Command(BaseCommand):
         LIMIT = 1500
         count = 0
         limit_reached = False
-        for u in User.objects.all():
-            for m in models.Movie.objects.all():
+
+        users = User.objects.all()
+        movies = models.Movie.objects.all()
+        
+        for u in users:
+            for m in movies:
                 r = models.Review.objects.create(review_user=u,movie=m,rating=random.randint(1,10),description=random.choice(review))
                 r.save()
                 if count==LIMIT:
