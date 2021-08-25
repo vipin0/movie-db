@@ -16,7 +16,6 @@ Hypercorn==0.11.2
 hyperframe==6.0.1
 idna==3.2
 inflection==0.5.1
-itypes==1.2.0
 Jinja2==3.0.1
 MarkupSafe==2.0.1
 openapi-codec==1.3.2

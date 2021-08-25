@@ -8,7 +8,7 @@ __pycache__/
 
 # static files
 static/*
-
+.lenv/
 
 # Distribution / packaging
 .Python
