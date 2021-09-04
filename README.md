@@ -10,6 +10,8 @@ A simple movie database API created using Django and Django REST Framework.
 ## To Run Locally
 Clone the repository and navigate to the main directory.
 
+**Install Redis database server and enter congigirations in settings.py**
+
 **Install the requirements**
 ```
 pip install -r requirements.txt
