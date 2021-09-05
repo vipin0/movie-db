@@ -9,6 +9,10 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 
+# for cache
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+
 from movieDbApp.pagination import CustomPagination
 from movieDbApp.permissions import IsAdminOrReadOnly, ReviewUserOrReadOnly
 from movieDbApp.models import Movie, Star,StreamingPlatform,Review
