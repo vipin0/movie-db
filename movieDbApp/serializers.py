@@ -31,19 +31,21 @@ class MovieWriteSerializer(serializers.ModelSerializer):
 
 class MovieReadSerializer(serializers.ModelSerializer):
     # reviews = ReviewReadSerializer(many=True,read_only=True)
-    # reviews = serializers.StringRelatedField(many=True,read_only=True)
+    reviews = serializers.StringRelatedField(many=True,read_only=True)
     # reviews = serializers.SerializerMethodField('paginated_reviews')
     total_reviews = serializers.SerializerMethodField('reviews_count')
-    platform = serializers.StringRelatedField(read_only=True)
+    streaming_platform = serializers.StringRelatedField(read_only=True,source='platform')
     stars = serializers.StringRelatedField(many=True)
     class Meta:
         model = Movie
-        fields = '__all__'
+        fields = ['id','name','description','released_on','streaming_platform','active','average_rating','number_rating','stars','total_reviews','reviews']
         read_only_fields = ['id','released_on','average_rating','number_rating']
 
     def reviews_count(self,obj):
-        review = Review.objects.filter(movie=obj)
-        return len(review)
+        # print(obj.reviews.count())
+        # review = Review.objects.select_related('movie').filter(movie=obj)
+        # return len(review)
+        return obj.reviews.count()
 
     def paginated_reviews(self, obj):
         try:
@@ -74,12 +76,14 @@ class StreamingPlatformSerializer(serializers.ModelSerializer):
     # movies = serializers.SerializerMethodField('paginated_movies')
     
     # movies = serializers.StringRelatedField(many=True,read_only=True)   # returns only name
-
-    movies = serializers.HyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        view_name='movie_detail'
-    )
+    # movies = serializers.PrimaryKeyRelatedField(
+    #     Movie.objects.all()
+    # )
+    # movies = serializers.HyperlinkedRelatedField(
+    #     many=True,
+    #     read_only=True,
+    #     view_name='movie_detail'
+    # )
     
     class Meta:
         model = StreamingPlatform

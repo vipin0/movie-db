@@ -26,7 +26,7 @@ class MovieList(ListCreateAPIView):
     ordering_fields = ['average_rating', 'platform','released_on']
     
     def get_queryset(self):
-        return Movie.objects.all()
+        return Movie.objects.prefetch_related('stars').select_related('platform').prefetch_related('reviews').all()
     def get_serializer_class(self):
 
         if self.request.method == 'POST':
@@ -54,7 +54,7 @@ class StreamingPlatformList(ListCreateAPIView):
     search_fields = ['name',]
 
     def get_queryset(self):
-        return StreamingPlatform.objects.all()
+        return StreamingPlatform.objects.prefetch_related('movies').all()
 
 class StreamingPlatformDetail(RetrieveUpdateDestroyAPIView):
     serializer_class = StreamingPlatformSerializer
