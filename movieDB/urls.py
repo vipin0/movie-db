@@ -16,7 +16,7 @@ schema_view = get_schema_view(
       default_version='v1',
       description="A sample Movie Database API",
       terms_of_service="http://localhost:8000",
-      contact=openapi.Contact(email="vipin@selfcode.in"),
+      contact=openapi.Contact(email="vipin6673@gmail.com"),
       license=openapi.License(name="BSD License"),
    ),
    public=True,
